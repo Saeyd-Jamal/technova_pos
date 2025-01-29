@@ -66,7 +66,7 @@ class AppServiceProvider extends ServiceProvider
 
 
 
-        // Observe For Models
+       // Observe For Models
         User::observe(UserObserver::class);
         Constant::observe(ConstantObserver::class);
         Currency::observe(CurrencyObserver::class);

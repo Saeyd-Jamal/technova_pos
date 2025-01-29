@@ -3,12 +3,13 @@
 
 // dashboard routes
 
-use App\Http\Controllers\Dashboard\ActivityLogController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\ConstantController;
 use App\Http\Controllers\Dashboard\CurrencyController;
-use App\Http\Controllers\Dashboard\UserController;
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard\SupplierController;
+use App\Http\Controllers\Dashboard\ActivityLogController;
 
 Route::group([
     'prefix' => '',
@@ -37,6 +38,8 @@ Route::group([
 
     Route::resource('constants', ConstantController::class)->only(['index','store','destroy']);
     Route::resource('currencies', CurrencyController::class)->except(['show','edit','create']);
+    Route::resource('supplier', SupplierController::class);
+
 
 
     Route::resources([
