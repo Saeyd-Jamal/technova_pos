@@ -24,6 +24,12 @@
                 <div data-i18n="home">الرئيسية</div>
             </a>
         </li>
+        <li class="menu-item  {{ request()->is('suppliers/*') || request()->is('suppliers') ? 'active' : '' }}">
+            <a href="{{ route('dashboard.suppliers.index') }}" class="menu-link">
+                <i class="fa-solid fa-truck-field me-2"></i>
+                <div data-i18n="suppliers">الموردين</div>
+            </a>
+        </li>
         <li class="menu-header small">
             <span class="menu-header-text" data-i18n="Apps &amp; Pages">إدارة النظام</span>
         </li>

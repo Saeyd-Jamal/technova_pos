@@ -38,12 +38,12 @@ Route::group([
 
     Route::resource('constants', ConstantController::class)->only(['index','store','destroy']);
     Route::resource('currencies', CurrencyController::class)->except(['show','edit','create']);
-    Route::resource('supplier', SupplierController::class);
 
 
 
     Route::resources([
         'users' => UserController::class,
+        'suppliers' => SupplierController::class
     ]);
     /* ********************************************************** */ 
 });
