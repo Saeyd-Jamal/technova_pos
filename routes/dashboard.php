@@ -5,11 +5,17 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\ProductController;
+use App\Http\Controllers\Dashboard\CategoryController;
+
 use App\Http\Controllers\Dashboard\ConstantController;
 use App\Http\Controllers\Dashboard\CurrencyController;
-
 use App\Http\Controllers\Dashboard\SupplierController;
 use App\Http\Controllers\Dashboard\ActivityLogController;
+use App\Http\Controllers\Dashboard\FlavorController;
+use App\Http\Controllers\Dashboard\QuantityTypeController;
+use App\Http\Controllers\Dashboard\SizeController;
+use App\Http\Controllers\Dashboard\StockController;
 
 Route::group([
     'prefix' => '',
@@ -43,7 +49,15 @@ Route::group([
 
     Route::resources([
         'users' => UserController::class,
-        'suppliers' => SupplierController::class
+        'suppliers' => SupplierController::class,
+        'categories' => CategoryController::class,
+        'products' => ProductController::class,
+        'flavors' => FlavorController::class,
+        'sizes' => SizeController::class,
+        'quantitytypes' => QuantityTypeController::class,
+        'stocks' => StockController::class,
+
+
     ]);
     /* ********************************************************** */ 
 });

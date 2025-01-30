@@ -30,6 +30,61 @@
                 <div data-i18n="suppliers">الموردين</div>
             </a>
         </li>
+
+        <li class="menu-item  {{ request()->is('categories/*') || request()->is('categories') ? 'active' : '' }}">
+            <a href="{{ route('dashboard.categories.index') }}" class="menu-link">
+                <i class="fa-solid fa-truck-field me-2"></i>
+                <div data-i18n="categories">الاقسام</div>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="javascript:void(0)" class="menu-link menu-toggle">
+                <i class="fa-solid fa-gear me-2"></i>
+                <div data-i18n="settings">قائمة المنتجات</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->is('products/*') || request()->is('products') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.products.index') }}" class="menu-link">
+                        <i class="fa-solid fa-users me-2"></i>
+                        <div data-i18n="products">المنتجات</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('flavors/*') || request()->is('flavors') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.flavors.index') }}" class="menu-link">
+                        <i class="fa-solid fa-calendar-days me-2"></i>
+                        <div data-i18n="flavors">النكهات</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('sizes/*') || request()->is('sizes') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.sizes.index') }}" class="menu-link">
+                        <i class="fa-solid fa-calendar-days me-2"></i>
+                        <div data-i18n="sizes">الاحجام</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('quantitytypes/*') || request()->is('quantitytypes') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.quantitytypes.index') }}" class="menu-link">
+                        <i class="fa-solid fa-calendar-days me-2"></i>
+                        <div data-i18n="quantitytypes">الكميات</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->is('stocks/*') || request()->is('stocks') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.stocks.index') }}" class="menu-link">
+                        <i class="fa-solid fa-calendar-days me-2"></i>
+                        <div data-i18n="stocks">التخزين</div>
+                    </a>
+                </li>
+                
+
+                
+            </ul>
+        </li>
+
+
         <li class="menu-header small">
             <span class="menu-header-text" data-i18n="Apps &amp; Pages">إدارة النظام</span>
         </li>
