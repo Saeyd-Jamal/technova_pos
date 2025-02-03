@@ -67,6 +67,8 @@ class ProductController extends Controller
             'description' => 'required',
             'status' => 'required',
             'category_id' => 'required|integer|exists:categories,id',
+            'flavors' => 'required|array', 
+            'flavors.*' => 'string', 
         ]);
         
         
@@ -83,8 +85,23 @@ class ProductController extends Controller
 
         $products = Product::create($data);
 
+        foreach ($request->flavors as $flavor) {
+            $products->flavors()->create(['name' => $flavor]);  // افترض أن لديك علاقة one-to-many مع النكهات
+        }
+
         return redirect()->route('dashboard.products.index')->with('success', __('Product created successfully.'));
     }
+
+
+    public function show($id)
+{
+   
+    $products = Product::with('flavors')->findOrFail($id); 
+
+    // إرسال المنتج إلى الصفحة لعرض التفاصيل
+    return view('dashboard.products.show', compact('products'));
+}
+
 
     public function edit($id)
     {
@@ -107,6 +124,8 @@ class ProductController extends Controller
         'description' => 'required',
         'status' => 'required',
         'category_id' => 'required|integer|exists:categories,id',
+        'flavors' => 'nullable|array', // التأكد من أن النكهات مصفوفة (اختياري)
+        'flavors.*' => 'string|max:255', // التأكد من أن كل نكهة هي نص
 
     ]);
 
@@ -127,6 +146,16 @@ class ProductController extends Controller
 
    
     $products->update($data);
+
+    if ($request->has('flavors')) {
+        // حذف النكهات القديمة
+        $products->flavors()->delete();
+        
+        // إضافة النكهات الجديدة
+        foreach ($request->flavors as $flavor) {
+            $products->flavors()->create(['name' => $flavor]);
+        }
+    }
 
    
     if ($old_image && isset($data['image'])) {

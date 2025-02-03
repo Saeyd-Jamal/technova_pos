@@ -21,7 +21,7 @@
 
 
                     <div class="mb-4 col-md-6">
-                        <label for="product_id" class="form-label">المنتجات</label>
+                        <label for="'product_id" class="form-label">المنتجات</label>
                         <select id="product_id" name="product_id" class="form-control">
                             <option value="" disabled selected>اختر</option>
                             @foreach ($products as $product)

@@ -13,6 +13,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'image',
+        'price',
         'description',
         'status',
         'created_by',
@@ -29,7 +30,7 @@ class Product extends Model
     }
 
 
-    public function flavor()
+    public function flavors()
     {
         return $this->hasMany(Flavor::class);
     }
