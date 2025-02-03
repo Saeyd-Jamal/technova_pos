@@ -17,7 +17,6 @@ class Product extends Model
         'status',
         'created_by',
         'category_id'
-        
     ];
 
     public function user(){

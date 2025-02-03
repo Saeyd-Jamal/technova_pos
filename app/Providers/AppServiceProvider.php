@@ -2,11 +2,23 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
 use App\Models\Constant;
 use App\Models\Currency;
+use App\Models\Flavor;
+use App\Models\Product;
+use App\Models\QuantityType;
+use App\Models\Size;
+use App\Models\Supplier;
 use App\Models\User;
+use App\Observers\CategoryObserver;
 use App\Observers\ConstantObserver;
 use App\Observers\CurrencyObserver;
+use App\Observers\FlavorObserver;
+use App\Observers\ProductObserver;
+use App\Observers\QuantityTypeObserver;
+use App\Observers\SizeObserver;
+use App\Observers\SupplierObserver;
 use App\Observers\UserObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
@@ -70,5 +82,11 @@ class AppServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
         Constant::observe(ConstantObserver::class);
         Currency::observe(CurrencyObserver::class);
+        Supplier::observe(SupplierObserver::class);
+        Category::observe(CategoryObserver::class);
+        Product::observe(ProductObserver::class);
+        Flavor::observe(FlavorObserver::class);
+        Size::observe(SizeObserver::class);
+        QuantityType::observe(QuantityTypeObserver::class);
     }
 }

@@ -6,6 +6,9 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\QuantityType;
+use App\Models\Size;
+use App\Models\Supplier;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -30,6 +33,9 @@ class ProductController extends Controller
                 ->addColumn('created_by', function ($product) {
                     return $product->user->name ?? 'غير محدد';
                 })
+                ->addColumn('action', function ($product) {
+                    return $product->id;
+                })
                 ->addColumn('edit', function ($product) {
                     return $product->id;
                 })
@@ -47,16 +53,14 @@ class ProductController extends Controller
         $this->authorize('create', Product::class);
         $products = new Product();
         $categories = Category::all();
-        
-
-        return view('dashboard.products.create', compact('products','categories'));
+        $suppliers = Supplier::all();
+        $sizes = Size::all();
+        $quantityTypes = QuantityType::all();
+        return view('dashboard.products.create', compact('products','categories','suppliers','sizes','quantityTypes'));
     }
 
     public function store(Request $request)
     {
-
-       
-
         $request->validate([
             'name' => 'required',
             'image' => 'required|image',
@@ -136,13 +140,12 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
-
         $this->authorize('delete', Product::class);
         $products = Product::findOrFail($id);
         $products->delete();
         $request = request();
         if($request->ajax()){
-            return response()->json(['message' => 'Item deleted successfully.']);
+            return response()->json(['message' => 'تم حذف المنتج بنجاح']);
         }
         return redirect()->route('dashboard.products.index')->with('success', __('Item deleted successfully.'));
 

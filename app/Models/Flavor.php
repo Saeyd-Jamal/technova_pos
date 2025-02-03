@@ -13,7 +13,6 @@ class Flavor extends Model
         'name',
         'image',
         'product_id'
-        
     ];
 
     public function product()
