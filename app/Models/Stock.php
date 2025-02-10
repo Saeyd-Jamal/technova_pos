@@ -43,4 +43,10 @@ class Stock extends Model
     {
         return $this->belongsTo(QuantityType::class)->withDefault();
     }
+
+    public function invoice()
+    {
+        return $this->belongsToMany(Invoice::class,'invoice_details');
+    }
+
 }

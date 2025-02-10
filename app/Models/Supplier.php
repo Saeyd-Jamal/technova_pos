@@ -19,4 +19,9 @@ class Supplier extends Model
         'address',
         'status',
     ];
+
+    public function invoice()
+    {
+        return $this->hasMany(Invoice::class);
+    }
 }

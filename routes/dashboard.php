@@ -12,7 +12,10 @@ use App\Http\Controllers\Dashboard\ConstantController;
 use App\Http\Controllers\Dashboard\CurrencyController;
 use App\Http\Controllers\Dashboard\SupplierController;
 use App\Http\Controllers\Dashboard\ActivityLogController;
+use App\Http\Controllers\Dashboard\FinancialDiaryController;
 use App\Http\Controllers\Dashboard\FlavorController;
+use App\Http\Controllers\Dashboard\InvoiceController;
+use App\Http\Controllers\Dashboard\InvoiceDetailController;
 use App\Http\Controllers\Dashboard\QuantityTypeController;
 use App\Http\Controllers\Dashboard\SizeController;
 use App\Http\Controllers\Dashboard\StockController;
@@ -56,6 +59,9 @@ Route::group([
         'sizes' => SizeController::class,
         'quantitytypes' => QuantityTypeController::class,
         'stocks' => StockController::class,
+        'invoices' => InvoiceController::class,
+        'invoicedetailes' =>InvoiceDetailController::class,
+        'financialdiaries' =>FinancialDiaryController::class,
 
 
     ]);
