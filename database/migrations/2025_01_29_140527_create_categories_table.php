@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('slug')->unique();
-            $table->text('description');
-            $table->enum('status', ['active', 'archive']);
+            $table->text('description')->nullable();
+            $table->enum('status', ['active', 'archive'])->default('active');
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });

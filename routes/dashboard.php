@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\CategoryController;
-
 use App\Http\Controllers\Dashboard\ConstantController;
 use App\Http\Controllers\Dashboard\CurrencyController;
 use App\Http\Controllers\Dashboard\SupplierController;
@@ -15,7 +14,6 @@ use App\Http\Controllers\Dashboard\ActivityLogController;
 use App\Http\Controllers\Dashboard\FinancialDiaryController;
 use App\Http\Controllers\Dashboard\FlavorController;
 use App\Http\Controllers\Dashboard\InvoiceController;
-use App\Http\Controllers\Dashboard\InvoiceDetailController;
 use App\Http\Controllers\Dashboard\QuantityTypeController;
 use App\Http\Controllers\Dashboard\SizeController;
 use App\Http\Controllers\Dashboard\StockController;
@@ -25,7 +23,7 @@ Route::group([
     'middleware' => ['auth'],
     'as' => 'dashboard.'
 ], function () {
-    /* ********************************************************** */ 
+    /* ********************************************************** */
 
     // Dashboard ************************
     Route::get('/', function () {return view('dashboard.index');})->name('home');
@@ -34,21 +32,20 @@ Route::group([
     Route::get('logs',[ActivityLogController::class,'index'])->name('logs.index');
     Route::get('getLogs',[ActivityLogController::class,'getLogs'])->name('logs.getLogs');
 
-    // users ************************
+    // Users ************************
     Route::get('profile/settings',[UserController::class,'settings'])->name('profile.settings');
 
-    /* ********************************************************** */ 
+    /* ********************************************************** */
+    // Products ************************
+    Route::get('products/search',[ProductController::class,'search'])->name('products.search');
 
 
 
     /* ********************************************************** */
 
     // Resources
-
     Route::resource('constants', ConstantController::class)->only(['index','store','destroy']);
     Route::resource('currencies', CurrencyController::class)->except(['show','edit','create']);
-
-
 
     Route::resources([
         'users' => UserController::class,
@@ -60,10 +57,7 @@ Route::group([
         'quantitytypes' => QuantityTypeController::class,
         'stocks' => StockController::class,
         'invoices' => InvoiceController::class,
-        'invoicedetailes' =>InvoiceDetailController::class,
         'financialdiaries' =>FinancialDiaryController::class,
-
-
     ]);
-    /* ********************************************************** */ 
+    /* ********************************************************** */
 });

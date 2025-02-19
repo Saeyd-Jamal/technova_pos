@@ -1,9 +1,11 @@
 @props([
-    'defaultValue' => null,
+    'optionsId' => null,
+    'options' => [],
     'name',
     'id' => null,
     'label'=>'',
-    'options' => []
+    'value'=> null,
+    'required' => false
 ])
 @if ($label)
     <label class="form-label" for="{{$name}}">
@@ -18,10 +20,16 @@
         'form-select',
         'is-invalid' => $errors->has($name)
     ])}}>
-    <option value="" disabled @selected($defaultValue == null)>اختر</option>
-    @foreach ($options as $option)
-        <option value="{{$option->id}}" @selected($defaultValue == $option->id)>{{$option->name}}</option>
-    @endforeach
+    <option value="" @selected(old($name, $value) == null)>إختر القيمة</option>
+    @if($optionsId!= null)
+        @foreach ($optionsId as $item)
+            <option value="{{ $item->id }}" @selected(old($name, $value) == $item->id)>{{ $item->name }}</option>
+        @endforeach
+    @else
+        @foreach ($options as $item)
+            <option value="{{ $item }}" @selected(old($name, $value) == $item)>{{ $item }}</option>
+        @endforeach
+    @endif
 </select>
 
 {{-- Validation --}}

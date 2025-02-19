@@ -86,7 +86,7 @@ class StockController extends Controller
 
     public function edit($id)
     {
-        $this->authorize('edit', Stock::class);
+        $this->authorize('update', Stock::class);
         $stocks = Stock::findOrFail($id);
         $products = Product::all();
         $flavors = Flavor::all();
@@ -100,7 +100,7 @@ class StockController extends Controller
 
     public function update(Request $request, $id)
 {
-    $this->authorize('edit', Stock::class);
+    $this->authorize('update', Stock::class);
 
     $request->validate([
         'quantity' => 'required',

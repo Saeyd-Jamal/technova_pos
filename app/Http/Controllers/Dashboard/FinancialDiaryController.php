@@ -97,7 +97,7 @@ class FinancialDiaryController extends Controller
      */
     public function edit(string $id)
     {
-        $this->authorize('edit', FinancialDiary::class);
+        $this->authorize('update', FinancialDiary::class);
 
         $financialdiaries = FinancialDiary::all();
         
@@ -109,7 +109,7 @@ class FinancialDiaryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this->authorize('edit', FinancialDiary::class);
+        $this->authorize('update', FinancialDiary::class);
 
         $request->validate([
             'day' => 'required',

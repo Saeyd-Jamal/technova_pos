@@ -24,6 +24,15 @@
                 <div data-i18n="home">الرئيسية</div>
             </a>
         </li>
+        <li class="menu-header small">
+            <span class="menu-header-text" data-i18n="Apps &amp; Pages">البيانات</span>
+        </li>
+        <li class="menu-item  {{ request()->is('invoices/*') || request()->is('invoices') ? 'active' : '' }}">
+            <a href="{{ route('dashboard.invoices.index') }}" class="menu-link">
+                <i class="fa-solid fa-truck-field me-2"></i>
+                <div data-i18n="invoices">الفواتير</div>
+            </a>
+        </li>
         <li class="menu-item  {{ request()->is('suppliers/*') || request()->is('suppliers') ? 'active' : '' }}">
             <a href="{{ route('dashboard.suppliers.index') }}" class="menu-link">
                 <i class="fa-solid fa-truck-field me-2"></i>
@@ -42,7 +51,6 @@
                 <div data-i18n="products">المنتجات</div>
             </a>
         </li>
-
         <li class="menu-item">
             <a href="javascript:void(0)" class="menu-link menu-toggle">
                 <i class="fa-solid fa-gear me-2"></i>

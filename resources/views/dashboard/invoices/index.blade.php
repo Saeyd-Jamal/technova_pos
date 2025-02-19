@@ -2,11 +2,13 @@
     @push('styles')
         <!-- DataTables CSS -->
         <link rel="stylesheet" href="{{asset('css/datatable/jquery.dataTables.min.css')}}">
-        <link rel="stylesheet" href="{{asset('css/datatable/dataTables.bootstrap4.css')}}">
-        <link rel="stylesheet" href="{{asset('css/datatable/dataTables.dataTables.css')}}">
-        <link rel="stylesheet" href="{{asset('css/datatable/buttons.dataTables.css')}}">
 
-        <link id="stickyTableLight" rel="stylesheet" href="{{ asset('css/custom/stickyTable.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/vendor/libs/typeahead-js/typeahead.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css') }}" />
+
         <link rel="stylesheet" href="{{ asset('css/custom/style.css') }}">
         <link rel="stylesheet" href="{{ asset('css/custom/datatableIndex.css') }}">
 
@@ -25,13 +27,16 @@
             .container-p-y:not([class^=pb-]):not([class*=" pb-"]){
                 padding-bottom: 0 !important;
             }
+            .dt-search{
+                display: none !important;
+            }
         </style>
     @endpush
     <x-slot:extra_nav>
         @can('create', 'App\\Models\Invoice')
         <div class="nav-item mx-2">
-            <a href="{{ route('dashboard.invoices.create') }}" class="btn btn-icon text-success m-0">
-                <i class="fa-solid fa-plus fe-16"></i>
+            <a href="{{ route('dashboard.invoices.create') }}" class="btn btn-success text-white m-0">
+                <i class="fa-solid fa-plus fe-16 me-2"></i> إضافة
             </a>
         </div>
         @endcan
@@ -53,70 +58,62 @@
         </div>
     </x-slot:extra_nav>
 
-
-    <div class="row">
-        <div class="col-md-12" style="padding: 0 2px;">
-            <div class="card">
-                <div class="card-body table-container p-0">
-                    <table id="invoices-table" class="table table-striped table-bordered table-hover sticky" style="width:100%; height: calc(100vh - 155px);">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th class="text-white opacity-7 text-center">#</th>
-                                <th class="sticky" style="right: 0;">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <span>Representative Name</span>
-                                        <div class="filter-dropdown ml-4">
-                                            <div class="dropdown">
-                                                <button class="btn btn-secondary btn-filter" id="btn-filter-2" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fa-brands fa-get-pocket text-white"></i>
-                                                </button>
-                                                <div class="filterDropdownMenu dropdown-menu dropdown-menu-right p-2" aria-labelledby="name_filter">
-                                                    <!-- إضافة checkboxes بدلاً من select -->
-                                                    <div class="searchable-checkbox">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <input type="search" class="form-control search-checkbox" data-index="2" placeholder="ابحث...">
-                                                            <button class="btn btn-success text-white filter-apply-btn-checkbox" data-target="2" data-field="name">
-                                                                <i class="fa-solid fa-check"></i>
-                                                            </button>
-                                                        </div>
-                                                        <div class="checkbox-list-box">
-                                                            <label style="display: block;">
-                                                                <input type="checkbox" value="all" class="all-checkbox" data-index="2"> الكل
-                                                            </label>
-                                                            <div class="checkbox-list checkbox-list-2">
-                                                            </div>
-                                                        </div>
+    <div class="card">
+        <div class="card-datatable table-responsive rounded">
+            <table class="invoice-list-table table table-striped table-bordered table-hover" id="invoices-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th class="text-white opacity-7 text-center">#</th>
+                        <th class="sticky" style="right: 0;">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span>اسم المورد</span>
+                                <div class="filter-dropdown ml-4">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary btn-filter" id="btn-filter-2" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa-brands fa-get-pocket text-white"></i>
+                                        </button>
+                                        <div class="filterDropdownMenu dropdown-menu dropdown-menu-right p-2" aria-labelledby="name_filter">
+                                            <!-- إضافة checkboxes بدلاً من select -->
+                                            <div class="searchable-checkbox">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <input type="search" class="form-control search-checkbox" data-index="2" placeholder="ابحث...">
+                                                    <button class="btn btn-success text-white filter-apply-btn-checkbox" data-target="2" data-field="name">
+                                                        <i class="fa-solid fa-check"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="checkbox-list-box">
+                                                    <label style="display: block;">
+                                                        <input type="checkbox" value="all" class="all-checkbox" data-index="2"> الكل
+                                                    </label>
+                                                    <div class="checkbox-list checkbox-list-2">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </th>
-                                <th>invoice_date</th>
-                                <th>receiver_name</th>
-                                <th>invoice_number</th>
-                                <th>total_before_tax</th>
-                                <th>total_tax</th>
-                                <th>total_after_tax</th>
-                                <th>extra_discount</th>
-                                <th>total_discount</th>
-                                <th>final_total</th>
-                                <th>type</th>
-                                <th>created_by</th>
-                                <th>Supplier Name</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>تاريخ الفاتورة</th>
+                        <th>اسم المندوب</th>
+                        <th>اسم المستلم</th>
+                        <th>رقم الفاتورة</th>
+                        <th>إجمالي الضريبة</th>
+                        <th>الخصومات</th>
+                        <th>السعر النهائي</th>
+                        <th>النوع</th>
+                        <th>من</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </div>
 
-
     @push('scripts')
         <!-- DataTables JS -->
+        {{-- <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script> --}}
         <script src="{{asset('js/plugins/datatable/jquery.dataTables.min.js')}}"></script>
         <script src="{{asset('js/plugins/datatable/dataTables.js')}}"></script>
         <script src="{{asset('js/plugins/datatable/dataTables.buttons.js')}}"></script>
@@ -136,7 +133,7 @@
                     }
                     return new Intl.NumberFormat('en-US', { minimumFractionDigits: min, maximumFractionDigits: 2 }).format(number);
                 };
-                let table = $('#invoices-table').DataTable({
+                const table = $('#invoices-table').DataTable({
                     processing: true,
                     serverSide: true,
                     responsive: true,
@@ -149,10 +146,6 @@
                     },
                     ajax: {
                         url: '{{ route("dashboard.invoices.index") }}',
-
-
-
-
                         error: function(xhr, status, error) {
                             console.error('AJAX error:', status, error);
                         }
@@ -167,19 +160,16 @@
                             @endcan
                         }},
                         { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, class: 'text-center'}, // عمود الترقيم التلقائي
-                        { data: 'representative_name', name: 'representative_name', orderable: false},
+                        { data: 'supplier_name', name: 'supplier_name' , orderable: false},
                         { data: 'invoice_date', name: 'invoice_date' , orderable: false},
+                        { data: 'representative_name', name: 'representative_name', orderable: false},
                         { data: 'receiver_name', name: 'receiver_name' , orderable: false},
                         { data: 'invoice_number', name: 'invoice_number' , orderable: false},
-                        { data: 'total_before_tax', name: 'total_before_tax' , orderable: false},
                         { data: 'total_tax', name: 'total_tax' , orderable: false},
-                        { data: 'total_after_tax', name: 'total_after_tax' , orderable: false},
-                        { data: 'extra_discount', name: 'extra_discount' , orderable: false},  
                         { data: 'total_discount', name: 'total_discount' , orderable: false},
                         { data: 'final_total', name: 'final_total' , orderable: false},
                         { data: 'type', name: 'type' , orderable: false},
                         { data: 'created_by', name: 'created_by' , orderable: false},
-                        { data: 'supplier_name', name: 'supplier_name' , orderable: false},
                         { data: 'delete', name: 'delete', orderable: false, class: 'text-center', searchable: false, render: function (data, type, row) {
                             @can('delete','App\\Models\Invoice')
                             return `
@@ -192,7 +182,7 @@
                             return '';
                             @endcan
                         },},
-                    
+
                     ],
                     columnDefs: [
                         { targets: 1, searchable: false, orderable: false } // تعطيل الفرز والبحث على عمود الترقيم
@@ -384,18 +374,13 @@
                     let text = $(this).text();
                     if (text != 'تصفية') {
                         $(this).text('تصفية');
+                        $('.filter-dropdown').slideUp();
                     }else{
                         $(this).text('إخفاء التصفية');
+                        $('.filter-dropdown').slideDown();
                     }
-                    $('.filter-dropdown').slideToggle();
                 });
-                if (curentTheme == "light") {
-                    $('#stickyTableLight').prop('disabled', false); // تشغيل النمط Light
-                    $('#stickyTableDark').prop('disabled', true);  // تعطيل النمط Dark
-                } else {
-                    $('#stickyTableLight').prop('disabled', true);  // تعطيل النمط Light
-                    $('#stickyTableDark').prop('disabled', false); // تشغيل النمط Dark
-                }
+
             });
         </script>
     @endpush

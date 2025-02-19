@@ -57,7 +57,7 @@ class QuantityTypeController extends Controller
 
     public function edit($id)
     {
-        $this->authorize('edit', QuantityType::class);
+        $this->authorize('update', QuantityType::class);
         $quantitys = QuantityType::findOrFail($id);
         return view('dashboard.quantitytypes.edit', compact('quantitys'));
     }
@@ -67,7 +67,7 @@ class QuantityTypeController extends Controller
 
     public function update(Request $request, $id)
 {
-    $this->authorize('edit', QuantityType::class);
+    $this->authorize('update', QuantityType::class);
 
     $request->validate([
         'name' => 'required',

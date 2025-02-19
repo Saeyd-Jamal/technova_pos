@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Stock extends Model
 {
     use HasFactory;
-   
+
 
     protected $fillable = [
-        'producy_id',
+        'product_id',
         'flavor_id',
         'size_id',
         'quantity_type_id',
-        'quantity',    
+        'quantity',
     ];
 
     protected $casts = [

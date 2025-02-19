@@ -56,7 +56,7 @@ class SizeController extends Controller
 
     public function edit($id)
     {
-        $this->authorize('edit', Size::class);
+        $this->authorize('update', Size::class);
         $sizes = Size::findOrFail($id);
        
         return view('dashboard.sizes.edit', compact('sizes'));
@@ -67,7 +67,7 @@ class SizeController extends Controller
 
     public function update(Request $request, $id)
 {
-    $this->authorize('edit', Size::class);
+    $this->authorize('update', Size::class);
 
     $request->validate([
         'name' => 'required',

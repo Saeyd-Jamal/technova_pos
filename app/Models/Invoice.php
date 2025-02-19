@@ -9,25 +9,27 @@ class Invoice extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
+        'invoice_number',
         'invoice_date',
         'representative_name',
         'receiver_name',
-        'invoice_number',
         'total_before_tax',
         'total_tax',
         'total_after_tax',
+        'discount_type',
+        'discount_amount',
         'extra_discount',
         'total_discount',
         'final_total',
         'type',
-        'created_by',
         'supplier_id',
-      
-
+        'supplier_name',
+        'status',
+        'created_by',
     ];
 
+    // Relationships
     public function user()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -38,8 +40,14 @@ class Invoice extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-    public function stock()
+    public function products()
     {
-        return $this->belongsToMany(Stock::class,'invoice_details');
+        return $this->belongsToMany(Stock::class,'invoice_details','invoice_id','stock_id')->withPivot([
+            'quantity',
+            'unit_price',
+            'tax_rate',
+            'discount_value',
+            'final_price',
+        ]);
     }
 }

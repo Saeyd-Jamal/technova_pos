@@ -78,7 +78,7 @@ class FlavorController extends Controller
 
     public function edit($id)
     {
-        $this->authorize('edit', Flavor::class);
+        $this->authorize('update', Flavor::class);
         $flavors = Flavor::findOrFail($id);
         $products = Product::all();
         return view('dashboard.flavors.edit', compact('flavors','products'));
@@ -89,7 +89,7 @@ class FlavorController extends Controller
 
     public function update(Request $request, $id)
 {
-    $this->authorize('edit', Flavor::class);
+    $this->authorize('update', Flavor::class);
 
     $request->validate([
         'name' => 'required',

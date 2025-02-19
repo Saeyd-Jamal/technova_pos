@@ -365,18 +365,13 @@
                     let text = $(this).text();
                     if (text != 'تصفية') {
                         $(this).text('تصفية');
+                        $('.filter-dropdown').slideUp();
                     }else{
                         $(this).text('إخفاء التصفية');
+                        $('.filter-dropdown').slideDown();
                     }
-                    $('.filter-dropdown').slideToggle();
                 });
-                if (curentTheme == "light") {
-                    $('#stickyTableLight').prop('disabled', false); // تشغيل النمط Light
-                    $('#stickyTableDark').prop('disabled', true);  // تعطيل النمط Dark
-                } else {
-                    $('#stickyTableLight').prop('disabled', true);  // تعطيل النمط Light
-                    $('#stickyTableDark').prop('disabled', false); // تشغيل النمط Dark
-                }
+                
             });
         </script>
     @endpush

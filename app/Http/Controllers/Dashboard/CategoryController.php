@@ -80,7 +80,7 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        $this->authorize('edit', Category::class);
+        $this->authorize('update', Category::class);
         $categories = Category::findOrFail($id);
         return view('dashboard.categories.edit', compact('categories'));
     }
@@ -90,7 +90,7 @@ class CategoryController extends Controller
 
     public function update(Request $request, $id)
 {
-    $this->authorize('edit', Category::class);
+    $this->authorize('update', Category::class);
 
     $request->validate([
         'name' => 'required',

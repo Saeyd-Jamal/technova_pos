@@ -8,20 +8,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class InvoiceDetail extends Model
 {
     use HasFactory;
-   
+
+    protected $table = 'invoice_details';
 
     protected $fillable = [
         'quantity',
-        'unit_price_before_tax',
+        'unit_price',
         'tax_rate',
-        'tax_amount',
-        'unit_price_after_tax',
-        'total_price_before_tax',
-        'total_price_after_tax',
-        'discount_amount',
+        'discount_value',
         'final_price',
         'invoice_id',
         'stock_id',
     ];
 
+    // relations
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+
+    public function stock()
+    {
+        return $this->belongsTo(Stock::class);
+    }
 }

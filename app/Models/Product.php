@@ -12,6 +12,7 @@ class Product extends Model
 
     protected $fillable = [
         'name',
+        'qr_code',
         'image',
         'price',
         'description',
@@ -20,6 +21,9 @@ class Product extends Model
         'category_id'
     ];
 
+
+
+    // Relationships
     public function user(){
         return $this->belongsTo(User::class,'created_by');
     }

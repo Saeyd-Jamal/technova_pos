@@ -67,7 +67,7 @@ class SupplierController extends Controller
 
     public function edit($id)
     {
-        $this->authorize('edit', Supplier::class);
+        $this->authorize('update', Supplier::class);
         $suppliers = Supplier::findOrFail($id);
         return view('dashboard.suppliers.edit', compact('suppliers'));
     }
@@ -75,7 +75,7 @@ class SupplierController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->authorize('edit', Supplier::class);
+        $this->authorize('update', Supplier::class);
 
         $request->validate([
             'name' => 'required',
