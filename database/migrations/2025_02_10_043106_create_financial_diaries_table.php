@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('financial_diaries', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
+            $table->date('date')->unique();
             $table->string('day');
-            $table->integer('cash_inventory');
-            $table->integer('operating_cost');
-            $table->integer('net_income');
-            $table->integer('profit_percentage');
-            $table->integer('gross_profit');
-            $table->integer('remaining_profit');
-            $table->integer('daily_purchases');
-            $table->integer('daily_sales');
-            $table->integer('daily_tax_collected');
-            $table->integer('discount_given');
-            $table->text('remarks');
+            $table->decimal('cash_inventory',8,2)->default(0);
+            $table->decimal('operating_cost',8,2)->default(0);
+            $table->decimal('net_income',8,2)->default(0);
+            $table->decimal('profit_percentage',8,2)->default(0);
+            $table->decimal('gross_profit',8,2)->default(0);
+            $table->decimal('remaining_profit',8,2)->default(0);
+            $table->decimal('daily_purchases',8,2)->default(0);
+            $table->decimal('daily_sales',8,2)->default(0);
+            $table->decimal('daily_tax_collected',8,2)->default(0);
+            $table->decimal('discount_given',8,2)->default(0);
+            $table->text('remarks')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });

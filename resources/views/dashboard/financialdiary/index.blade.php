@@ -2,11 +2,13 @@
     @push('styles')
         <!-- DataTables CSS -->
         <link rel="stylesheet" href="{{asset('css/datatable/jquery.dataTables.min.css')}}">
-        <link rel="stylesheet" href="{{asset('css/datatable/dataTables.bootstrap4.css')}}">
-        <link rel="stylesheet" href="{{asset('css/datatable/dataTables.dataTables.css')}}">
-        <link rel="stylesheet" href="{{asset('css/datatable/buttons.dataTables.css')}}">
 
-        <link id="stickyTableLight" rel="stylesheet" href="{{ asset('css/custom/stickyTable.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/vendor/libs/typeahead-js/typeahead.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css') }}" />
+
         <link rel="stylesheet" href="{{ asset('css/custom/style.css') }}">
         <link rel="stylesheet" href="{{ asset('css/custom/datatableIndex.css') }}">
 
@@ -25,8 +27,13 @@
             .container-p-y:not([class^=pb-]):not([class*=" pb-"]){
                 padding-bottom: 0 !important;
             }
+            .dt-search{
+                display: none !important;
+            }
         </style>
     @endpush
+
+
     <x-slot:extra_nav>
         @can('create', 'App\\Models\FinancialDiary')
         <div class="nav-item mx-2">
@@ -63,28 +70,29 @@
                             <tr>
                                 <th></th>
                                 <th class="text-white opacity-7 text-center">#</th>
+                                <th>اليوم</th>
                                 <th class="sticky" style="right: 0;">
                                     <div class="d-flex align-items-center justify-content-between">
-                                        <span>day</span>
+                                        <span>التاريخ</span>
                                         <div class="filter-dropdown ml-4">
                                             <div class="dropdown">
-                                                <button class="btn btn-secondary btn-filter" id="btn-filter-2" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <button class="btn btn-secondary btn-filter" id="btn-filter-3" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <i class="fa-brands fa-get-pocket text-white"></i>
                                                 </button>
-                                                <div class="filterDropdownMenu dropdown-menu dropdown-menu-right p-2" aria-labelledby="name_filter">
+                                                <div class="filterDropdownMenu dropdown-menu dropdown-menu-right p-2" aria-labelledby="date_filter">
                                                     <!-- إضافة checkboxes بدلاً من select -->
                                                     <div class="searchable-checkbox">
                                                         <div class="d-flex justify-content-between align-items-center">
-                                                            <input type="search" class="form-control search-checkbox" data-index="2" placeholder="ابحث...">
-                                                            <button class="btn btn-success text-white filter-apply-btn-checkbox" data-target="2" data-field="name">
+                                                            <input type="search" class="form-control search-checkbox" data-index="3" placeholder="ابحث...">
+                                                            <button class="btn btn-success text-white filter-apply-btn-checkbox" data-target="3" data-field="date">
                                                                 <i class="fa-solid fa-check"></i>
                                                             </button>
                                                         </div>
                                                         <div class="checkbox-list-box">
                                                             <label style="display: block;">
-                                                                <input type="checkbox" value="all" class="all-checkbox" data-index="2"> الكل
+                                                                <input type="checkbox" value="all" class="all-checkbox" data-index="3"> الكل
                                                             </label>
-                                                            <div class="checkbox-list checkbox-list-2">
+                                                            <div class="checkbox-list checkbox-list-3">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -93,18 +101,18 @@
                                         </div>
                                     </div>
                                 </th>
-                                <th>cash_inventory</th>
-                                <th>operating_cost</th>
-                                <th>net_income</th>
-                                <th>profit_percentage</th>
-                                <th>gross_profit</th>
-                                <th>remaining_profit</th>
-                                <th>daily_purchases</th>
-                                <th>daily_sales</th>
-                                <th>daily_tax_collected</th>
-                                <th>discount_given</th>
-                                <th>remarks</th>
-                                <th>created_by</th>
+                                <th>المخزون النقدي</th>
+                                <th>تكاليف التشغيل</th>
+                                <th>صافي الدخل</th>
+                                <th>نسبة الربح</th>
+                                <th>الربح الإجمالي</th>
+                                <th>الربح المتبقي</th>
+                                <th>المشتريات اليومية</th>
+                                <th>المبيعات اليومية</th>
+                                <th>الضريبة المحصلة اليومية</th>
+                                <th>إجمالي الخصم اليومي</th>
+                                <th>ملاحظات</th>
+                                <th>من</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -149,10 +157,6 @@
                     },
                     ajax: {
                         url: '{{ route("dashboard.financialdiaries.index") }}',
-
-
-
-
                         error: function(xhr, status, error) {
                             console.error('AJAX error:', status, error);
                         }
@@ -169,13 +173,14 @@
                         { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, class: 'text-center'},
                          // عمود الترقيم التلقائي
                         { data: 'day', name: 'day', orderable: false},
+                        { data: 'date', name: 'date', orderable: false, class: 'text-center'},
                         { data: 'cash_inventory', name: 'cash_inventory' , orderable: false},
                         { data: 'operating_cost', name: 'operating_cost' , orderable: false},
                         { data: 'net_income', name: 'net_income' , orderable: false},
                         { data: 'profit_percentage', name: 'profit_percentage' , orderable: false},
                         { data: 'gross_profit', name: 'gross_profit' , orderable: false},
                         { data: 'remaining_profit', name: 'remaining_profit' , orderable: false},
-                        { data: 'daily_purchases', name: 'daily_purchases' , orderable: false},  
+                        { data: 'daily_purchases', name: 'daily_purchases' , orderable: false},
                         { data: 'daily_sales', name: 'daily_sales' , orderable: false},
                         { data: 'daily_tax_collected', name: 'daily_tax_collected' , orderable: false},
                         { data: 'discount_given', name: 'discount_given' , orderable: false},
@@ -193,7 +198,6 @@
                             return '';
                             @endcan
                         },},
-                    
                     ],
                     columnDefs: [
                         { targets: 1, searchable: false, orderable: false } // تعطيل الفرز والبحث على عمود الترقيم
@@ -391,7 +395,7 @@
                         $('.filter-dropdown').slideDown();
                     }
                 });
-                
+
             });
         </script>
     @endpush

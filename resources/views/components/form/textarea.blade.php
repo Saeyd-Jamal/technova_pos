@@ -1,17 +1,18 @@
 @props([
     'value' => '',
     'name',
+    'rows' => 3,
     'label'=>'',
 ])
 @if ($label)
-    <label for="{{$name}}">
+    <label class="form-label" for="{{$name}}">
         {{ $label }}
     </label>
 @endif
 
 <textarea
     name="{{$name}}"
-    rows="4"
+    rows="{{$rows}}"
     {{$attributes->class([
         'form-control',
         'is-invalid' => $errors->has($name)

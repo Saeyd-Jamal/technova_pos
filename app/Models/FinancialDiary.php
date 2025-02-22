@@ -24,8 +24,8 @@ class FinancialDiary extends Model
         'daily_tax_collected',
         'discount_given',
         'remarks',
+        'funds_statistics',
         'created_by',
-
     ];
 
     public function user()

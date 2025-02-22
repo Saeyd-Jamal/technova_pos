@@ -160,7 +160,7 @@ class InvoiceController extends Controller
                     'stock_id' => $request->stock_id[$i],
                 ]);
                 $stock = Stock::findOrFail($request->stock_id[$i]);
-                if($request->type == 'sale'){
+                if($request->type == 'sell'){
                     $stock->update([
                         'quantity' => $stock->quantity - $request->quantity[$i]
                     ]);
@@ -299,8 +299,7 @@ class InvoiceController extends Controller
                 $stock = Stock::findOrFail($request->stock_id[$i]);
                 $invoice_detail = InvoiceDetail::where('invoice_id', $invoice->id)->where('stock_id', $request->stock_id[$i])->first();
                 if($invoice_detail){
-
-                    if($invoice->type == 'sale'){
+                    if($invoice->type == 'sell'){
                         $stock->update([
                             'quantity' => ($stock->quantity + $invoice_detail->quantity) - $request->quantity[$i]
                         ]);
@@ -334,7 +333,7 @@ class InvoiceController extends Controller
                         'invoice_id'  => $invoice->id,
                         'stock_id' => $request->stock_id[$i],
                     ]);
-                    if($request->type == 'sale'){
+                    if($request->type == 'sell'){
                         $stock->update([
                             'quantity' => $stock->quantity - $request->quantity[$i]
                         ]);
@@ -347,7 +346,7 @@ class InvoiceController extends Controller
                             'quantity' => $stock->quantity + $request->quantity[$i]
                         ]);
                     }else{
-                        abort(404);
+                        abort(500);
                     }
                 }
             }
@@ -367,8 +366,30 @@ class InvoiceController extends Controller
     public function destroy(string $id)
     {
         $this->authorize('delete', Invoice::class);
-        $invoices = Invoice::findOrFail($id);
-        $invoices->delete();
+        $invoice = Invoice::findOrFail($id);
+        $products= $invoice->products;
+        foreach($products as $product){
+            $stock = Stock::findOrFail($product->stock_id);
+            $invoice_detail = InvoiceDetail::where('invoice_id', $invoice->id)->where('stock_id', $product->pivot_stock_id)->first();
+            if($invoice->type == 'sell'){
+                $stock->update([
+                    'quantity' => ($stock->quantity + $invoice_detail->quantity)
+                ]);
+            }elseif($invoice->type == 'buy'){
+                $stock->update([
+                    'quantity' => ($stock->quantity - $invoice_detail->quantity)
+                ]);
+            }elseif($invoice->type == 'return'){
+                $stock->update([
+                    'quantity' => ($stock->quantity - $invoice_detail->quantity )
+                ]);
+            }else{
+                abort(500);
+            }
+        }
+
+        $invoice->delete();
+
         return redirect()->route('dashboard.invoices.index')->with('success', __('Invoice deleted successfully.'));
     }
 }

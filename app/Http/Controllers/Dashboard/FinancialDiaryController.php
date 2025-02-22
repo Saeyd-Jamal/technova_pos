@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Dashboard;
 use Illuminate\Http\Request;
 use App\Models\FinancialDiary;
 use App\Http\Controllers\Controller;
+use App\Models\Invoice;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class FinancialDiaryController extends Controller
@@ -18,15 +21,13 @@ class FinancialDiaryController extends Controller
 
         $request = request();
         if ($request->ajax()) {
-            $financialdiaries = FinancialDiary::with('user')->select(['id', 'day','cash_inventory',  'operating_cost', 'net_income', 'profit_percentage','gross_profit','remaining_profit','daily_purchases','daily_sales','daily_tax_collected','discount_given','remarks','created_by']);
+            $financialdiaries = FinancialDiary::with('user')->get();
 
             return DataTables::of($financialdiaries)
                 ->addIndexColumn()
-                
                 ->addColumn('created_by', function ($financialdiariary) {
                     return $financialdiariary->user->name ?? 'غير محدد';
                 })
-               
                 ->addColumn('action', function ($financialdiariary) {
                     return $financialdiariary->id;
                 })
@@ -48,10 +49,56 @@ class FinancialDiaryController extends Controller
     public function create()
     {
         $this->authorize('create', FinancialDiary::class);
-        
-        $financialdiaries = new FinancialDiary();
-        return view('dashboard.financialdiary.create', compact('financialdiaries'));
+        $financialdiary = new FinancialDiary();
+        $financialdiary->date = Carbon::now()->format('Y-m-d');
+        $financialdiary->day = Carbon::createFromFormat('Y-m-d', $financialdiary->date)->locale('ar')->dayName;
+        $financialdiary->funds_statistics = [
+            [
+                'category' => '100',
+                'quantity' => '0',
+                'amount' => '0'
+            ],
+            [
+                'category' => '50',
+                'quantity' => '0',
+                'amount' => '0'
+            ],
+            [
+                'category' => '20',
+                'quantity' => '0',
+                'amount' => '0'
+            ],
+            [
+                'category' => '10',
+                'quantity' => '0',
+                'amount' => '0'
+            ],
+            [
+                'category' => '5',
+                'quantity' => '0',
+                'amount' => '0'
+            ],
+            [
+                'category' => '1',
+                'quantity' => '0',
+                'amount' => '0'
+            ],
+            [
+                'category' => 'فراطة',
+                'quantity' => '0',
+                'amount' => '0'
+            ],
+        ];
 
+
+        // حساب اليوميات المالية
+
+        $dailyMal = $this->dailyMal($financialdiary->date);
+        $financialdiary->daily_purchases = $dailyMal['daily_purchases'];
+        $financialdiary->daily_sales = $dailyMal['daily_sales'];
+        $financialdiary->daily_tax_collected = $dailyMal['daily_tax_collected'];
+        $financialdiary->discount_given = $dailyMal['discount_given'];
+        return view('dashboard.financialdiary.create', compact('financialdiary'));
     }
 
     /**
@@ -60,34 +107,53 @@ class FinancialDiaryController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', FinancialDiary::class);
-
         $request->validate([
-            'day' => 'required',
-            'date' => 'required',
-            'cash_inventory' => 'required|integer',
-            'operating_cost' => 'required|integer',
-            'net_income' => 'required|integer',
-            'profit_percentage' => 'required|integer',
-            'gross_profit' => 'required|integer',
-            'remaining_profit' => 'required|integer',
-            'daily_purchases' => 'required|integer',
-            'daily_sales' => 'required|integer',
-            'daily_tax_collected' => 'required|integer',
-            'discount_given' => 'required|integer',
-            'remarks' => 'required',
-            'daily_tax_collected' => 'required|integer',
+            'day' => 'required|string',
+            'date' => 'required|date',
+            'cash_inventory' => 'required|numeric|min:0',
+            'operating_cost' => 'required|numeric|min:0',
+            'net_income' => 'required|numeric|min:0',
+            'profit_percentage' => 'required|numeric',
+            'gross_profit' => 'required|numeric',
+            'remaining_profit' => 'required|numeric',
+            'daily_purchases' => 'required|numeric|min:0',
+            'daily_sales' => 'required|numeric|min:0',
+            'daily_tax_collected' => 'required|numeric|min:0',
+            'discount_given' => 'required|numeric|min:0',
+            'remarks' => 'nullable|string',
+            'quantity-funds*' => 'required|numeric|min:0'
         ]);
-        
-        
+
+        $funds_statistics = [];
+        foreach($request->input('quantity-funds') as $key => $value){
+            if($key == 'فراطة'){
+                $funds_statistics[] = [
+                    'category' => $key,
+                    'quantity' => $value,
+                    'amount' => $value * 1
+                ];
+            }else{
+                $funds_statistics[] = [
+                    'category' => $key,
+                    'quantity' => $value,
+                    'amount' => $value * $key
+                ];
+            }
+        }
+
+        $request->merge([
+            'created_by' => Auth::user()->id,
+            'funds_statistics' => json_encode($funds_statistics)
+        ]);
         FinancialDiary::create($request->all());
-        
+
         return redirect()->route('dashboard.financialdiaries.index')->with('success', __('تمت الاضافة بنجاح'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(FinancialDiary $financialdiary)
     {
         //
     }
@@ -95,56 +161,66 @@ class FinancialDiaryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(FinancialDiary $financialdiary)
     {
         $this->authorize('update', FinancialDiary::class);
-
-        $financialdiaries = FinancialDiary::all();
-        
-        return view('dashboard.financialdiary.edit', compact('financialdiaries'));
+        $financialdiary->funds_statistics = json_decode($financialdiary->funds_statistics, true);
+        $btn_label = 'تعديل';
+        return view('dashboard.financialdiary.edit', compact('financialdiary','btn_label'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, FinancialDiary $financialdiary)
     {
         $this->authorize('update', FinancialDiary::class);
 
         $request->validate([
-            'day' => 'required',
-            'date' => 'required',
-            'cash_inventory' => 'required|integer',
-            'operating_cost' => 'required|integer',
-            'net_income' => 'required|integer',
-            'profit_percentage' => 'required|integer',
-            'gross_profit' => 'required|integer',
-            'remaining_profit' => 'required|integer',
-            'daily_purchases' => 'required|integer',
-            'daily_sales' => 'required|integer',
-            'daily_tax_collected' => 'required|integer',
-            'discount_given' => 'required|integer',
-            'remarks' => 'required',
-            'daily_tax_collected' => 'required|integer',
+            'day' => 'required|string',
+            'date' => 'required|date',
+            'cash_inventory' => 'required|numeric|min:0',
+            'operating_cost' => 'required|numeric|min:0',
+            'net_income' => 'required|numeric|min:0',
+            'profit_percentage' => 'required|numeric',
+            'gross_profit' => 'required|numeric',
+            'remaining_profit' => 'required|numeric',
+            'daily_purchases' => 'required|numeric|min:0',
+            'daily_sales' => 'required|numeric|min:0',
+            'daily_tax_collected' => 'required|numeric|min:0',
+            'discount_given' => 'required|numeric|min:0',
+            'remarks' => 'nullable|string',
+            'quantity-funds*' => 'required|numeric|min:0'
         ]);
 
+        $financialdiary->update($request->all());
 
-        $financialdiaries = FinancialDiary::findOrFail($id);
-
-        $financialdiaries->update($request->all());
-    
         return redirect()->route('dashboard.financialdiaries.index')->with('success', __('FinancialDiary created successfully.'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(FinancialDiary $financialdiary)
     {
-        
+
         $this->authorize('delete', FinancialDiary::class);
-        $financialdiaries = FinancialDiary::findOrFail($id);
-        $financialdiaries->delete();
+        $financialdiary->delete();
         return redirect()->route('dashboard.financialdiaries.index')->with('success', __('FinancialDiary deleted successfully.'));
+    }
+
+    public function dailyMal($date){
+        $invoices = Invoice::where('invoice_date', $date)->get();
+        $daily_purchases = $invoices->where('type','buy')->sum('final_total');
+        $daily_sales = $invoices->where('type','sell')->sum('final_total');
+        $daily_tax_collected = $invoices->sum('total_tax');
+        $discount_given = $invoices->sum('total_discount');
+
+        return [
+            'daily_purchases' => $daily_purchases,
+            'daily_sales' => $daily_sales,
+            'daily_tax_collected' => $daily_tax_collected,
+            'discount_given' => $discount_given,
+        ];
     }
 }

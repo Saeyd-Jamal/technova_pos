@@ -39,6 +39,8 @@ Route::group([
     // Products ************************
     Route::get('products/search',[ProductController::class,'search'])->name('products.search');
 
+    // Financial Diaries ************************
+    Route::post('financialdiaries/{date}/dailyMal',[FinancialDiaryController::class,'dailyMal'])->name('financialdiaries.dailyMal');
 
 
     /* ********************************************************** */
