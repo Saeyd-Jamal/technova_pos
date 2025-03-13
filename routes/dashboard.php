@@ -3,20 +3,27 @@
 
 // dashboard routes
 
+use App\Models\BankBalance;
+use App\Models\RevolvingBalanceBill;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard\SizeController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\StockController;
+use App\Http\Controllers\Dashboard\FlavorController;
+use App\Http\Controllers\Dashboard\InvoiceController;
 use App\Http\Controllers\Dashboard\ProductController;
+use App\Http\Controllers\Dashboard\SubSaleController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\ConstantController;
 use App\Http\Controllers\Dashboard\CurrencyController;
 use App\Http\Controllers\Dashboard\SupplierController;
 use App\Http\Controllers\Dashboard\ActivityLogController;
-use App\Http\Controllers\Dashboard\FinancialDiaryController;
-use App\Http\Controllers\Dashboard\FlavorController;
-use App\Http\Controllers\Dashboard\InvoiceController;
+use App\Http\Controllers\Dashboard\BankBalanceController;
 use App\Http\Controllers\Dashboard\QuantityTypeController;
-use App\Http\Controllers\Dashboard\SizeController;
-use App\Http\Controllers\Dashboard\StockController;
+use App\Http\Controllers\Dashboard\TotalBalanceController;
+use App\Http\Controllers\Dashboard\FinancialDiaryController;
+use App\Http\Controllers\Dashboard\PreviousBalanceController;
+use App\Http\Controllers\Dashboard\RevolvingBalanceBillController;
 
 Route::group([
     'prefix' => '',
@@ -60,6 +67,11 @@ Route::group([
         'stocks' => StockController::class,
         'invoices' => InvoiceController::class,
         'financialdiaries' =>FinancialDiaryController::class,
+        'bankbalances' =>BankBalanceController::class,
+        'previousbalances' =>PreviousBalanceController::class,
+        'revolvingbalancebills' =>RevolvingBalanceBillController::class,
+        'subsales' =>SubSaleController::class,
+        'totalbalances' =>TotalBalanceController::class,
     ]);
     /* ********************************************************** */
 });

@@ -4,3 +4,5 @@
         @include("dashboard.categories._form")
     </form>
 </x-front-layout>
+
+
