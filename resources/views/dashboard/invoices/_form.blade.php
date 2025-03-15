@@ -310,7 +310,7 @@
                 <div class="rounded-top">
                     <h3 class="text-center mb-6">إختار نوع الفاتورة</h3>
                     <div class="row gy-6">
-                        <div class="col-xl mb-md-0  btn btn-outline-info waves-effect choose_type_invoice_btn" data-type="buy">
+                        <div class="col-xl mb-md-0 me-8 btn btn-outline-info waves-effect choose_type_invoice_btn" data-type="buy">
                             <div class="card border rounded shadow-none">
                                 <div class="card-body pt-12">
                                     <div class="mt-3 mb-5 text-center">
@@ -320,7 +320,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl mb-md-0  btn btn-outline-primary waves-effect mx-4 choose_type_invoice_btn" data-type="sell">
+                        {{-- <div class="col-xl mb-md-0  btn btn-outline-primary waves-effect mx-4 choose_type_invoice_btn" data-type="sell">
                             <div class="card border rounded shadow-none">
                                 <div class="card-body pt-12">
                                     <div class="mt-3 mb-5 text-center">
@@ -329,7 +329,7 @@
                                     <h4 class="card-title text-center text-capitalize mb-1">بيع</h4>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-xl mb-md-0  btn btn-outline-dark waves-effect choose_type_invoice_btn" data-type="return">
                             <div class="card border rounded shadow-none">
                                 <div class="card-body pt-12">

@@ -19,6 +19,7 @@ use App\Http\Controllers\Dashboard\CurrencyController;
 use App\Http\Controllers\Dashboard\SupplierController;
 use App\Http\Controllers\Dashboard\ActivityLogController;
 use App\Http\Controllers\Dashboard\BankBalanceController;
+use App\Http\Controllers\Dashboard\CostBalanceController;
 use App\Http\Controllers\Dashboard\QuantityTypeController;
 use App\Http\Controllers\Dashboard\TotalBalanceController;
 use App\Http\Controllers\Dashboard\FinancialDiaryController;
@@ -33,28 +34,30 @@ Route::group([
     /* ********************************************************** */
 
     // Dashboard ************************
-    Route::get('/', function () {return view('dashboard.index');})->name('home');
+    Route::get('/', function () {
+        return view('dashboard.index');
+    })->name('home');
 
     // Logs ************************
-    Route::get('logs',[ActivityLogController::class,'index'])->name('logs.index');
-    Route::get('getLogs',[ActivityLogController::class,'getLogs'])->name('logs.getLogs');
+    Route::get('logs', [ActivityLogController::class, 'index'])->name('logs.index');
+    Route::get('getLogs', [ActivityLogController::class, 'getLogs'])->name('logs.getLogs');
 
     // Users ************************
-    Route::get('profile/settings',[UserController::class,'settings'])->name('profile.settings');
+    Route::get('profile/settings', [UserController::class, 'settings'])->name('profile.settings');
 
     /* ********************************************************** */
     // Products ************************
-    Route::get('products/search',[ProductController::class,'search'])->name('products.search');
+    Route::get('products/search', [ProductController::class, 'search'])->name('products.search');
 
     // Financial Diaries ************************
-    Route::post('financialdiaries/{date}/dailyMal',[FinancialDiaryController::class,'dailyMal'])->name('financialdiaries.dailyMal');
+    Route::post('financialdiaries/{date}/dailyMal', [FinancialDiaryController::class, 'dailyMal'])->name('financialdiaries.dailyMal');
 
 
     /* ********************************************************** */
 
     // Resources
-    Route::resource('constants', ConstantController::class)->only(['index','store','destroy']);
-    Route::resource('currencies', CurrencyController::class)->except(['show','edit','create']);
+    Route::resource('constants', ConstantController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('currencies', CurrencyController::class)->except(['show', 'edit', 'create']);
 
     Route::resources([
         'users' => UserController::class,
@@ -66,12 +69,13 @@ Route::group([
         'quantitytypes' => QuantityTypeController::class,
         'stocks' => StockController::class,
         'invoices' => InvoiceController::class,
-        'financialdiaries' =>FinancialDiaryController::class,
-        'bankbalances' =>BankBalanceController::class,
-        'previousbalances' =>PreviousBalanceController::class,
-        'revolvingbalancebills' =>RevolvingBalanceBillController::class,
-        'subsales' =>SubSaleController::class,
-        'totalbalances' =>TotalBalanceController::class,
+        'financialdiaries' => FinancialDiaryController::class,
+        'bankbalances' => BankBalanceController::class,
+        'previousbalances' => PreviousBalanceController::class,
+        'revolvingbalancebills' => RevolvingBalanceBillController::class,
+        'subsales' => SubSaleController::class,
+        'totalbalances' => TotalBalanceController::class,
+        'cost_balances' => CostBalanceController::class,
     ]);
     /* ********************************************************** */
 });

@@ -77,33 +77,39 @@
                     </a>
                 </li>
 
-                
+
             </ul>
         </li>
 
         <li class="menu-item">
             <a href="javascript:void(0)" class="menu-link menu-toggle">
             <i class="fas fa-money-check-alt"></i>
-                <div data-i18n="settings">البنك</div>
+                <div data-i18n="settings">الرصيد</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('sizes/*') || request()->is('sizes') ? 'active' : '' }}">
-                    <a href="{{ route('dashboard.bankbalances.index') }}" class="menu-link">
+                <li class="menu-item {{ request()->is('cost_balances/*') || request()->is('cost_balances') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.cost_balances.index') }}" class="menu-link">
                     <i class="fas fa-money-check"></i>
-                        <div data-i18n="sizes">الرصيد البنكي</div>
+                        <div data-i18n="cost_balances">رصيد الكلف</div>
                     </a>
                 </li>
-                <li class="menu-item {{ request()->is('quantitytypes/*') || request()->is('quantitytypes') ? 'active' : '' }}">
+                <li class="menu-item {{ request()->is('bankbalances/*') || request()->is('bankbalances') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.bankbalances.index') }}" class="menu-link">
+                    <i class="fas fa-money-check"></i>
+                        <div data-i18n="bankbalances">الرصيد البنكي</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->is('totalbalances/*') || request()->is('totalbalances') ? 'active' : '' }}">
                     <a href="{{ route('dashboard.totalbalances.index') }}" class="menu-link">
                     <i class="fas fa-dollar-sign"></i>
-                        <div data-i18n="quantitytypes">الرصيد الاجمالي</div>
+                        <div data-i18n="totalbalances">الرصيد الاجمالي</div>
                     </a>
                 </li>
 
-                <li class="menu-item {{ request()->is('quantitytypes/*') || request()->is('quantitytypes') ? 'active' : '' }}">
+                <li class="menu-item {{ request()->is('previousbalances/*') || request()->is('previousbalances') ? 'active' : '' }}">
                     <a href="{{ route('dashboard.previousbalances.index') }}" class="menu-link">
                     <i class="far fa-credit-card"></i>
-                        <div data-i18n="quantitytypes">رصيد مدور سابق</div>
+                        <div data-i18n="previousbalances">رصيد مدور سابق</div>
                     </a>
                 </li>
             </ul>
@@ -115,27 +121,20 @@
                 <div data-i18n="settings">فواتير و مبيعات</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('sizes/*') || request()->is('sizes') ? 'active' : '' }}">
+                <li class="menu-item {{ request()->is('subsales/*') || request()->is('subsales') ? 'active' : '' }}">
                     <a href="{{ route('dashboard.subsales.index') }}" class="menu-link">
                         <i class="fa-solid fa-calendar-days me-2"></i>
-                        <div data-i18n="sizes">مبيع فرعي</div>
+                        <div data-i18n="subsales">مبيع فرعي</div>
                     </a>
                 </li>
-                <li class="menu-item {{ request()->is('quantitytypes/*') || request()->is('quantitytypes') ? 'active' : '' }}">
+                <li class="menu-item {{ request()->is('revolvingbalancebills/*') || request()->is('revolvingbalancebills') ? 'active' : '' }}">
                     <a href="{{ route('dashboard.revolvingbalancebills.index') }}" class="menu-link">
                     <i class="fas fa-caret-square-left"></i>
-                        <div data-i18n="quantitytypes">الفواتير من الرصيد المدور السابق</div>
+                        <div data-i18n="revolvingbalancebills">الفواتير من الرصيد المدور السابق</div>
                     </a>
                 </li>
-
-               
             </ul>
         </li>
-
-
-       
-
-
         <li class="menu-header small">
             <span class="menu-header-text" data-i18n="Apps &amp; Pages">إدارة النظام</span>
         </li>

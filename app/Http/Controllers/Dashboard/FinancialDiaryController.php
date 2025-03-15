@@ -193,6 +193,26 @@ class FinancialDiaryController extends Controller
             'quantity-funds*' => 'required|numeric|min:0'
         ]);
 
+        $funds_statistics = [];
+        foreach($request->input('quantity-funds') as $key => $value){
+            if($key == 'فراطة'){
+                $funds_statistics[] = [
+                    'category' => $key,
+                    'quantity' => $value,
+                    'amount' => $value * 1
+                ];
+            }else{
+                $funds_statistics[] = [
+                    'category' => $key,
+                    'quantity' => $value,
+                    'amount' => $value * $key
+                ];
+            }
+        }
+
+        $request->merge([
+            'funds_statistics' => json_encode($funds_statistics)
+        ]);
         $financialdiary->update($request->all());
 
         return redirect()->route('dashboard.financialdiaries.index')->with('success', __('FinancialDiary created successfully.'));
@@ -206,19 +226,24 @@ class FinancialDiaryController extends Controller
 
         $this->authorize('delete', FinancialDiary::class);
         $financialdiary->delete();
+        $request = request();
+        if($request->ajax()){
+            return response()->json(['message' => 'Item deleted successfully.']);
+        }
         return redirect()->route('dashboard.financialdiaries.index')->with('success', __('FinancialDiary deleted successfully.'));
     }
 
     public function dailyMal($date){
         $invoices = Invoice::where('invoice_date', $date)->get();
         $daily_purchases = $invoices->where('type','buy')->sum('final_total');
-        $daily_sales = $invoices->where('type','sell')->sum('final_total');
+        // $daily_sales = $invoices->where('type','sell')->sum('final_total');
         $daily_tax_collected = $invoices->sum('total_tax');
         $discount_given = $invoices->sum('total_discount');
 
         return [
             'daily_purchases' => $daily_purchases,
-            'daily_sales' => $daily_sales,
+            // 'daily_sales' => $daily_sales,
+            'daily_sales' => 0,
             'daily_tax_collected' => $daily_tax_collected,
             'discount_given' => $discount_given,
         ];

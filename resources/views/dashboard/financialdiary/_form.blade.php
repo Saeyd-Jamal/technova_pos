@@ -90,7 +90,7 @@
                         <x-form.input type="number" min="0" step="0.01" label="المشتريات اليومية" :value="$financialdiary->daily_purchases" name="daily_purchases" required readonly  />
                     </div>
                     <div class="mb-4 col-md-4">
-                        <x-form.input type="number" min="0" step="0.01" label="المبيعات اليومية" :value="$financialdiary->daily_sales" name="daily_sales" required readonly  />
+                        <x-form.input type="number" min="0" step="0.01" label="المبيعات اليومية" :value="$financialdiary->daily_sales" name="daily_sales" required />
                     </div>
                     <div class="mb-4 col-md-4">
                         <x-form.input type="number" min="0" step="0.01" label="حصيلة الضريبة اليومية" :value="$financialdiary->daily_tax_collected" name="daily_tax_collected" required readonly  />

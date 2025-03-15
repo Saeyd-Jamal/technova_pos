@@ -79,10 +79,10 @@ class InvoiceController extends Controller
                 'id' => 'buy',
                 'name' => 'شراء'
             ],
-            (object)[
-                'id' => 'sell',
-                'name' => 'بيع'
-            ],
+            // (object)[
+            //     'id' => 'sell',
+            //     'name' => 'بيع'
+            // ],
             (object)[
                 'id' => 'return',
                 'name' => 'مرجعة'
@@ -169,9 +169,9 @@ class InvoiceController extends Controller
                         'quantity' => $stock->quantity + $request->quantity[$i]
                     ]);
                 }elseif($request->type == 'return'){
-                    $stock->update([
-                        'quantity' => $stock->quantity + $request->quantity[$i]
-                    ]);
+                    // $stock->update([
+                    //     'quantity' => $stock->quantity + $request->quantity[$i]
+                    // ]);
                 }else{
                     abort(404);
                 }
@@ -230,10 +230,10 @@ class InvoiceController extends Controller
                 'id' => 'buy',
                 'name' => 'شراء'
             ],
-            (object)[
-                'id' => 'sell',
-                'name' => 'بيع'
-            ],
+            // (object)[
+            //     'id' => 'sell',
+            //     'name' => 'بيع'
+            // ],
             (object)[
                 'id' => 'return',
                 'name' => 'مرجعة'
@@ -309,9 +309,9 @@ class InvoiceController extends Controller
                             'quantity' => ($stock->quantity - $invoice_detail->quantity) + $request->quantity[$i]
                         ]);
                     }elseif($invoice->type == 'return'){
-                        $stock->update([
-                            'quantity' => ($stock->quantity - $invoice_detail->quantity ) + $request->quantity[$i]
-                        ]);
+                        // $stock->update([
+                        //     'quantity' => ($stock->quantity - $invoice_detail->quantity ) + $request->quantity[$i]
+                        // ]);
                     }else{
                         abort(500);
                     }
@@ -342,9 +342,9 @@ class InvoiceController extends Controller
                             'quantity' => $stock->quantity + $request->quantity[$i]
                         ]);
                     }elseif($request->type == 'return'){
-                        $stock->update([
-                            'quantity' => $stock->quantity + $request->quantity[$i]
-                        ]);
+                        // $stock->update([
+                        //     'quantity' => $stock->quantity + $request->quantity[$i]
+                        // ]);
                     }else{
                         abort(500);
                     }
@@ -380,9 +380,9 @@ class InvoiceController extends Controller
                     'quantity' => ($stock->quantity - $invoice_detail->quantity)
                 ]);
             }elseif($invoice->type == 'return'){
-                $stock->update([
-                    'quantity' => ($stock->quantity - $invoice_detail->quantity )
-                ]);
+                // $stock->update([
+                //     'quantity' => ($stock->quantity - $invoice_detail->quantity )
+                // ]);
             }else{
                 abort(500);
             }

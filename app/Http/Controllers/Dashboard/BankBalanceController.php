@@ -18,7 +18,7 @@ class BankBalanceController extends Controller
             $bankbalances = BankBalance::all();
 
             return DataTables::of($bankbalances)
-                ->addIndexColumn()  
+                ->addIndexColumn()
                 ->addColumn('edit', function ($bankbalance) {
                     return $bankbalance->id;
                 })
@@ -46,10 +46,7 @@ class BankBalanceController extends Controller
             'amount' => 'required',
             'date' => 'required',
             'type' => 'required',
-           
         ]);
-       
-
         $bankbalance = BankBalance::create($request->all());
 
         return redirect()->route('dashboard.bankbalances.index')->with('success', __('BankBalance created successfully.'));
@@ -62,26 +59,26 @@ class BankBalanceController extends Controller
         return view('dashboard.bankbalances.edit', compact('bankbalances'));
     }
 
-    
+
 
 
     public function update(Request $request, $id)
-{
-    $this->authorize('update', BankBalance::class);
+    {
+        $this->authorize('update', BankBalance::class);
 
-    $request->validate([
-        'name' => 'required',
-        'amount' => 'required',
-        'date' => 'required',
-        'type' => 'required',
-       
-    ]);
+        $request->validate([
+            'name' => 'required',
+            'amount' => 'required',
+            'date' => 'required',
+            'type' => 'required',
 
-    $bankbalances = BankBalance::findOrFail($id);
-    $bankbalances->update($request->all());
+        ]);
 
-    return redirect()->route('dashboard.bankbalances.index')->with('success', __('BankBalance updated successfully.'));
-}
+        $bankbalances = BankBalance::findOrFail($id);
+        $bankbalances->update($request->all());
+
+        return redirect()->route('dashboard.bankbalances.index')->with('success', __('BankBalance updated successfully.'));
+    }
 
 
     public function destroy($id)
@@ -91,10 +88,9 @@ class BankBalanceController extends Controller
         $bankbalances = BankBalance::findOrFail($id);
         $bankbalances->delete();
         $request = request();
-        if($request->ajax()){
+        if ($request->ajax()) {
             return response()->json(['message' => 'Item deleted successfully.']);
         }
         return redirect()->route('dashboard.bankbalances.index')->with('success', __('Item deleted successfully.'));
-
     }
 }
